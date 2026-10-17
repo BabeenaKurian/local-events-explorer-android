@@ -5,7 +5,7 @@ data class Event(
     val title: String,
     val location: String,
     val dateTime: String,
-    val imgUrl: String,
+    val imageUrl: String,
     val description: String,
     val latitude: Double,
     val longitude: Double
