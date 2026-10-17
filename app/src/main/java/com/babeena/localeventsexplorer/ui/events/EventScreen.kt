@@ -31,17 +31,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.babeena.localeventsexplorer.ui.theme.primaryRed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import coil.compose.AsyncImage
 import com.babeena.localeventsexplorer.utils.EventDateUtils.formatEventDate
 
 @Composable
 fun eventScreen(viewModel: EventViewModel,
                 onEventClick: (String) -> Unit,
+                onBookmarksClick:() -> Unit
 ) {
-
+    val bookmarkedEventIds by viewModel.bookmarkedEventIds.collectAsStateWithLifecycle()
     val eventUiState by viewModel.eventUiState.collectAsStateWithLifecycle()
+
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
@@ -72,6 +78,9 @@ fun eventScreen(viewModel: EventViewModel,
                         text = "Events List",
                         style = MaterialTheme.typography.headlineSmall
                     )
+                    TextButton(onClick = onBookmarksClick) {
+                        Text("Bookmarks")
+                    }
                 }
 
                 when {
@@ -142,7 +151,6 @@ fun eventScreen(viewModel: EventViewModel,
                                                 verticalArrangement =
                                                     Arrangement.spacedBy(10.dp)
                                             ) {
-
                                                 Row(
                                                     modifier = Modifier.fillMaxWidth(),
                                                     verticalAlignment = Alignment.CenterVertically,
@@ -154,6 +162,26 @@ fun eventScreen(viewModel: EventViewModel,
                                                         style = MaterialTheme.typography.titleLarge,
                                                         color = MaterialTheme.colorScheme.onSurface
                                                     )
+
+                                                    IconButton(
+                                                        onClick = {
+                                                            viewModel.toggleBookmark(event)
+                                                        }
+                                                    ) {
+                                                        Icon(
+                                                            imageVector = if (event.id in bookmarkedEventIds) {
+                                                                Icons.Default.Bookmark
+                                                            } else {
+                                                                Icons.Default.BookmarkBorder
+                                                            },
+                                                            contentDescription = if (event.id in bookmarkedEventIds) {
+                                                                "Remove bookmark"
+                                                            } else {
+                                                                "Add bookmark"
+                                                            },
+                                                            tint = primaryRed
+                                                        )
+                                                    }
                                                 }
                                                 Row(
                                                     verticalAlignment =

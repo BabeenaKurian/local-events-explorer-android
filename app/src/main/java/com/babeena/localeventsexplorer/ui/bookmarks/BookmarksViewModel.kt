@@ -3,8 +3,8 @@ package com.babeena.localeventsexplorerandroidapp.ui.bookmarks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.babeena.localeventsexplorerandroidapp.domain.model.Event
-import com.babeena.localeventsexplorerandroidapp.domain.repository.BookmarkRepository
+import com.babeena.localeventsexplorer.domain.model.Event
+import com.babeena.localeventsexplorer.domain.model.repository.BookmarkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted

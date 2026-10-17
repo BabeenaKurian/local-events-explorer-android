@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.babeena.localeventsexplorerandroidapp.ui.theme.primaryRed
+import com.babeena.localeventsexplorer.ui.theme.primaryRed
 
 @Composable
 fun BookmarksScreen(

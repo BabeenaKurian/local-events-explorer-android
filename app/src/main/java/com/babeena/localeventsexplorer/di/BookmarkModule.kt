@@ -1,8 +1,8 @@
 
-package com.babeena.localeventsexplorerandroidapp.di
+package com.babeena.localeventsexplorer.di
 
-import com.babeena.localeventsexplorerandroidapp.data.repository.BookmarkRepositoryImpl
-import com.babeena.localeventsexplorerandroidapp.domain.repository.BookmarkRepository
+import com.babeena.localeventsexplorer.data.repository.BookmarkRepositoryImpl
+import com.babeena.localeventsexplorer.domain.model.repository.BookmarkRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,10 +1,10 @@
 
-package com.babeena.localeventsexplorerandroidapp.data.repository
+package com.babeena.localeventsexplorer.data.repository
 
+import com.babeena.localeventsexplorer.domain.model.Event
+import com.babeena.localeventsexplorer.domain.model.repository.BookmarkRepository
 import com.babeena.localeventsexplorerandroidapp.data.local.BookmarkedEventDao
 import com.babeena.localeventsexplorerandroidapp.data.local.BookmarkedEventEntity
-import com.babeena.localeventsexplorerandroidapp.domain.model.Event
-import com.babeena.localeventsexplorerandroidapp.domain.repository.BookmarkRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

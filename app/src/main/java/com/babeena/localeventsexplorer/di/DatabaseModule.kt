@@ -1,5 +1,5 @@
 
-package com.babeena.localeventsexplorerandroidapp.di
+package com.babeena.localeventsexplorer.di
 
 import android.content.Context
 import androidx.room.Room
@@ -14,8 +14,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
-// 1. Add the migration HERE, above DatabaseModule.
 private val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL(
@@ -35,7 +33,6 @@ private val MIGRATION_1_2 = object : Migration(1, 2) {
         )
     }
 }
-
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -67,4 +64,5 @@ object DatabaseModule {
     ): EventDao {
         return database.eventDao()
     }
+
 }

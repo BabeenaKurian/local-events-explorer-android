@@ -91,4 +91,9 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
+
+    //Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 }

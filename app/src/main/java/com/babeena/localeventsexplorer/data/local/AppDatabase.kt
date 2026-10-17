@@ -12,12 +12,12 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         BookmarkedEventEntity::class,
-        EventEntity::class
-    ],
+        EventEntity::class],
     version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookmarkedEventDao(): BookmarkedEventDao
     abstract fun eventDao(): EventDao
+
 }

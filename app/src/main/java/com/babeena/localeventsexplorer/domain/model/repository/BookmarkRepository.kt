@@ -1,6 +1,6 @@
-package com.babeena.localeventsexplorerandroidapp.domain.repository
+package com.babeena.localeventsexplorer.domain.model.repository
 
-import com.babeena.localeventsexplorerandroidapp.domain.model.Event
+import com.babeena.localeventsexplorer.domain.model.Event
 import kotlinx.coroutines.flow.Flow
 
 interface BookmarkRepository {
