@@ -1,5 +1,7 @@
 package com.babeena.localeventsexplorer.ui.events
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,9 +37,15 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
+import com.babeena.localeventsexplorer.ui.common.rememberUserLocation
+import com.babeena.localeventsexplorer.utils.DistanceUtils
 import com.babeena.localeventsexplorer.utils.EventDateUtils.formatEventDate
 
 @Composable
@@ -47,6 +55,9 @@ fun eventScreen(viewModel: EventViewModel,
 ) {
     val bookmarkedEventIds by viewModel.bookmarkedEventIds.collectAsStateWithLifecycle()
     val eventUiState by viewModel.eventUiState.collectAsStateWithLifecycle()
+
+    val userLocation = rememberUserLocation()
+    val context = LocalContext.current
 
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing
@@ -110,6 +121,14 @@ fun eventScreen(viewModel: EventViewModel,
                                     items = events,
                                     key = { event -> event.id }
                                 ) { event ->
+                                    val distanceInKm = userLocation?.let { location ->
+                                        DistanceUtils.calculateDistanceInKm(
+                                            userLatitude = location.latitude,
+                                            userLongitude = location.longitude,
+                                            eventLatitude = event.latitude,
+                                            eventLongitude = event.longitude
+                                        )
+                                    }
 
                                     Card(
                                         modifier = Modifier
@@ -231,6 +250,40 @@ fun eventScreen(viewModel: EventViewModel,
                                                         color = MaterialTheme.colorScheme
                                                             .onSurfaceVariant
                                                     )
+                                                }
+
+                                                if (distanceInKm != null) {
+                                                    Text(
+                                                        text = String.format(
+                                                            java.util.Locale.getDefault(),
+                                                            "%.1f km away",
+                                                            distanceInKm
+                                                        ),
+                                                        style = MaterialTheme.typography.bodyMedium,
+                                                        color = MaterialTheme.colorScheme.primary
+                                                    )
+                                                }
+
+                                                Button(
+                                                    onClick = {
+                                                        val mapUri = Uri.parse(
+                                                            "geo:${event.latitude},${event.longitude}?q=${event.latitude},${event.longitude}(${
+                                                                Uri.encode(
+                                                                    event.title
+                                                                )
+                                                            })"
+                                                        )
+                                                        val mapIntent =
+                                                            Intent(Intent.ACTION_VIEW, mapUri)
+                                                        context.startActivity(mapIntent)
+                                                    },
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    colors = ButtonDefaults.buttonColors(
+                                                        containerColor = Color(0xFFE41B1F),
+                                                        contentColor = Color.White
+                                                    )
+                                                ) {
+                                                    Text("Open in Maps")
                                                 }
                                                 event.description?.let {
                                                     Text(

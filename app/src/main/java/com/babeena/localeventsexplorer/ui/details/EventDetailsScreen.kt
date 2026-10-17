@@ -1,6 +1,8 @@
 
 package com.babeena.localeventsexplorerandroidapp.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,11 +33,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.babeena.localeventsexplorer.ui.common.rememberUserLocation
 import com.babeena.localeventsexplorer.ui.theme.primaryRed
+import com.babeena.localeventsexplorer.utils.DistanceUtils
 import com.babeena.localeventsexplorer.utils.EventDateUtils.formatEventDate
 
 
@@ -44,6 +52,9 @@ fun EventDetailsScreen(
 ) {
     val uiState by viewModel.eventDetailsUiState
         .collectAsStateWithLifecycle()
+
+    val userLocation = rememberUserLocation()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -105,6 +116,15 @@ fun EventDetailsScreen(
             uiState.event != null -> {
                 val event = uiState.event!!
 
+                val distanceInKm = userLocation?.let { location ->
+                    DistanceUtils.calculateDistanceInKm(
+                        userLatitude = location.latitude,
+                        userLongitude = location.longitude,
+                        eventLatitude = event.latitude,
+                        eventLongitude = event.longitude
+                    )
+                }
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -158,6 +178,40 @@ fun EventDetailsScreen(
                             text = event.location,
                             style = MaterialTheme.typography.titleMedium
                         )
+                    }
+
+                    if (distanceInKm != null) {
+                        Text(
+                            text = String.format(
+                                java.util.Locale.getDefault(),
+                                "%.1f km away",
+                                distanceInKm
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            val mapUri = Uri.parse(
+                                "geo:${event.latitude},${event.longitude}?q=${event.latitude},${event.longitude}(${
+                                    Uri.encode(
+                                        event.title
+                                    )
+                                })"
+                            )
+                            val mapIntent =
+                                Intent(Intent.ACTION_VIEW, mapUri)
+                            context.startActivity(mapIntent)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE41B1F),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Open in Maps")
                     }
                     HorizontalDivider()
 
