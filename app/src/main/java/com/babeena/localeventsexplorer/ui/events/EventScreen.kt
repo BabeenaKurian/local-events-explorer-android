@@ -37,7 +37,9 @@ import coil.compose.AsyncImage
 import com.babeena.localeventsexplorer.utils.EventDateUtils.formatEventDate
 
 @Composable
-fun eventScreen(viewModel: EventViewModel) {
+fun eventScreen(viewModel: EventViewModel,
+                onEventClick: (String) -> Unit,
+) {
 
     val eventUiState by viewModel.eventUiState.collectAsStateWithLifecycle()
     Scaffold(
@@ -107,6 +109,9 @@ fun eventScreen(viewModel: EventViewModel) {
                                                 horizontal = 16.dp,
                                                 vertical = 8.dp
                                             ),
+                                        onClick = {
+                                            onEventClick(event.id)
+                                        },
                                         shape = RoundedCornerShape(20.dp),
                                         colors = CardDefaults.cardColors(
                                             containerColor =

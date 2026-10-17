@@ -5,8 +5,13 @@ import com.babeena.localeventsexplorer.domain.model.Event
 import com.babeena.localeventsexplorer.domain.model.repository.EventRepository
 import javax.inject.Inject
 
-class EventRepositoryImpl @Inject constructor(val eventApiService: EventApiService): EventRepository {
+class EventRepositoryImpl @Inject constructor (
+    private val eventApiService: EventApiService): EventRepository {
     override suspend fun getEvents(): List<Event> {
         return eventApiService.getEvents()
+    }
+
+    override suspend fun getEventById(id: String): Event {
+        return eventApiService.getEventById(id)
     }
 }

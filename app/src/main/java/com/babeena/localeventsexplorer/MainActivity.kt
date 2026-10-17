@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.babeena.localeventsexplorer.ui.events.EventViewModel
 import com.babeena.localeventsexplorer.ui.events.eventScreen
 import com.babeena.localeventsexplorer.ui.theme.LocalEventsExplorerTheme
+import com.babeena.localeventsexplorerandroidapp.ui.navigation.NavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LocalEventsExplorerTheme {
-                eventScreen(viewModel)
+                NavGraph()
             }
         }
     }
